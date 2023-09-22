@@ -14,7 +14,7 @@ function addMessage(document, messageObj, className) {
     mClone.querySelector(".username").innerText = messageObj.username;
     mClone.querySelector("minidenticon-svg").setAttribute("username", messageObj.username);
     const date = new Date(messageObj.date);
-    mClone.querySelector(".posttime").innerText = date.toLocaleTimeString();
+    mClone.querySelector(".timestamp").innerText = date.toLocaleTimeString();
     messageList.appendChild(mClone);
     messageList.scrollTop = messageList.scrollHeight;
 }

@@ -230,30 +230,36 @@ minidenticon-svg {
 
 .flr {
   flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  width: calc(100% - 50px);
   padding: 2px 8px;
   flex-shrink: 0;
 }
 
-
+.flr > *{
+  padding: 1px;
+}
 
 .messages {
   flex: 1 0 auto;
 }
 
 .msg {
-  font-size: 12pt;
+  font-size: 1rem;
 }
 
 .timestamp {
   color: rgb(0 0 0 / 70%);
-  font-size: 8pt;
+  font-size: 12px;
+  text-align: right;
+  float: right;
 }
 
 .username {
+  display: block;
   margin-right: 3px;
+  font-size: 14px;
+  color: rgb(61 114 237);
+  font-weight: 500;
+  font-family: sans-serif;
 }
 
 .posttime {
@@ -266,6 +272,10 @@ minidenticon-svg {
   float: right;
 }
 
-.msg-self .timestamp {
-  text-align: right;
+.msg-self .username {
+  display: none;
+}
+
+.msg-self minidenticon-svg {
+  display: none;
 }
