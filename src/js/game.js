@@ -7,7 +7,7 @@ function stub(message) {
 
 export default function game(window, document, settings) {
 
-    const players = [];
+    let players = [];
 
     const handlers = {
         "message": stub,
@@ -38,7 +38,7 @@ export default function game(window, document, settings) {
 
     const actionKeys = () => Object.keys(handlers);
 
-    const onMessage = () => {}
+    const onMessage = () => {};
 
     return {
         on,
