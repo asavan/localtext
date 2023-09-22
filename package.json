@@ -1,0 +1,48 @@
+{
+  "name": "localtext",
+  "version": "1.1.1",
+  "author": "Alex Sav",
+  "description": "Chat for local network",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "ws": "node devtools/ws-server.js",
+    "start": "webpack serve --config webpack_configs/webpack.config.js --mode development",
+    "all": "npm-run-all -p -r ws start",
+    "android": "webpack --config webpack_configs/android.webpack.config.js --mode production",
+    "build": "webpack --config webpack_configs/production.webpack.config.js --mode production",
+    "style": "npx eslint . && npx stylelint \"**/*.css\"",
+    "style:fix": "npx eslint . --fix && npx stylelint \"**/*.css\" --fix",
+    "test": "node --test --test-reporter dot ./tests",
+    "test:verbose": "node --test ./tests",
+    "test:watch": "node --test --watch ./tests",
+    "test:coverage": "c8 node --test --test-reporter dot ./tests",
+    "updates": "npx ncu"
+  },
+  "devDependencies": {
+    "c8": "^8.0.1",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "eslint": "^8.49.0",
+    "html-inline-css-webpack-plugin": "^1.11.2",
+    "html-webpack-plugin": "^5.5.3",
+    "jsdom": "^22.1.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "npm-check-updates": "^16.14.4",
+    "npm-run-all": "^4.1.5",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard": "^34.0.0",
+    "terser-webpack-plugin": "^5.3.9",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "workbox-webpack-plugin": "^7.0.0",
+    "ws": "8.14.1"
+  }
+}

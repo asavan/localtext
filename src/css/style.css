@@ -1,0 +1,118 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --main-color: #F0F8FF;
+  --player-color: chartreuse;
+  --field-size: 4;
+  --card-width: 50px;
+  --color-green: #5A5;
+  --color-red: #F55;
+  --color-yellow: #FA0;
+  --color-blue: #55F;
+  --current-color: aliceblue;
+  --inverted-color: white;
+}
+
+
+html,
+body {
+  height: 100%;
+}
+
+input, select, textarea, button {
+  font-family:inherit;
+  font-size:inherit;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.qrcode.big {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 450px;
+  width: 100%;
+}
+
+.qrcode {
+  width: 300px;
+  margin: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.mirror {
+  transform: scaleX(-1);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 70%);
+  transition: opacity 700ms;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.overlay.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.spinner {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  min-height: 100vh;
+}
+
+.spinner::after {
+  animation: change-content .8s linear infinite;
+  display: block;
+  content: "⠋";
+  font-size: 80px;
+}
+
+@keyframes change-content {
+  10% { content: "⠙"; }
+  20% { content: "⠹"; }
+  30% { content: "⠸"; }
+  40% { content: "⠼"; }
+  50% { content: "⠴"; }
+  60% { content: "⠦"; }
+  70% { content: "⠧"; }
+  80% { content: "⠇"; }
+  90% { content: "⠏"; }
+}
