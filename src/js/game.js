@@ -5,6 +5,20 @@ function stub(message) {
     console.trace("Stub " + message);
 }
 
+function addMessage(document, messageObj, className) {
+    const messageList = document.querySelector(".chat-window");
+    const mTemplate = document.querySelector("#message-template");
+    const mClone = mTemplate.content.cloneNode(true).firstElementChild;
+    mClone.classList.add(className);
+    mClone.querySelector(".msg").innerText = messageObj.text;
+    mClone.querySelector(".username").innerText = messageObj.username;
+    mClone.querySelector("minidenticon-svg").setAttribute("username", messageObj.username);
+    const date = new Date(messageObj.date);
+    mClone.querySelector(".posttime").innerText = date.toLocaleTimeString();
+    messageList.appendChild(mClone);
+    messageList.scrollTop = messageList.scrollHeight;
+}
+
 export default function game(window, document, settings) {
 
     const textInput = document.querySelector(".chat-input input");
@@ -16,12 +30,53 @@ export default function game(window, document, settings) {
         }
     });
 
+
+
+
     let players = [];
+    let username = "";
 
     const handlers = {
         "message": stub,
         "username": stub
     };
+
+    const setUsername = (name) => {
+        username = name;
+    };
+
+    // enterName(window, document, settings, game.getHandlers());
+    function sendMessage(text) {
+        const now = Date.now();
+        const messageObj = {
+            text: text,
+            date: now,
+            username: username
+        };
+        handlers["message"](messageObj);
+        addMessage(document, messageObj, "msg-self");
+    }
+
+    function onMessage(message) {
+        addMessage(document, message, "msg-remote");
+        return true;
+    }
+
+    const form = document.querySelector(".chat-input");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (username === "") {
+            enterName(window, document, settings, handlers);
+            return;
+        }
+        if (textInput.value === "") {
+            return;
+        }
+        sendMessage(textInput.value);
+        textInput.value = "";
+        textInput.classList.remove("good");
+    });
+
 
     function on(name, f) {
         handlers[name] = f;
@@ -47,14 +102,13 @@ export default function game(window, document, settings) {
 
     const actionKeys = () => Object.keys(handlers);
 
-    const onMessage = () => {};
-
     return {
         on,
         join,
         onConnect,
         disconnect,
         actionKeys,
-        onMessage
+        onMessage,
+        setUsername
     };
 }

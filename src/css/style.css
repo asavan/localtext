@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
@@ -14,6 +15,7 @@
   --color-blue: #55F;
   --current-color: aliceblue;
   --inverted-color: white;
+  --my-back-color: #E9F5E9;
 }
 
 
@@ -40,6 +42,10 @@ ul {
 
 .content {
   flex: 1 0 auto;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
 }
 
 footer {
@@ -56,7 +62,7 @@ footer {
 }
 
 .qrcode {
-  width: 300px;
+  width: 200px;
   margin: auto;
 }
 
@@ -137,9 +143,8 @@ footer {
 }
 
 .chatbox {
-  width: 300px;
   height: 400px;
-  max-height: 400px;
+  max-height: 600px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -149,14 +154,13 @@ footer {
 .chat-window {
   flex: auto;
   max-height: calc(100% - 60px);
-  background: #2f323b;
   overflow: auto;
+  flex-shrink: 0;
 }
 
 .chat-input {
   flex: 0 0 auto;
   height: 60px;
-  background: #40434e;
   border-top: 1px solid #2671ff;
   box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
 }
@@ -167,18 +171,16 @@ footer {
   outline: 0 none;
   border: none;
   width: calc(100% - 60px);
-  color: white;
   text-indent: 10px;
   font-size: 12pt;
   padding: 0;
-  background: #40434e;
 }
 
 .chat-input button {
   float: right;
   outline: 0 none;
   border: none;
-  background: rgb(255 255 255 / 25%);
+  background: rgb(0 0 0 / 50%);
   height: 40px;
   width: 40px;
   border-radius: 50%;
@@ -204,14 +206,12 @@ footer {
   position: relative;
   display: inline-block;
   width: 100%;
-  margin: 0 0 10px;
   padding: 0;
 }
 
 .msg-box {
   display: flex;
-  background: #5b5e6c;
-  padding: 10px 10px 0;
+  align-items: center;
   border-radius: 0 6px 6px 0;
   max-width: 80%;
   width: auto;
@@ -222,10 +222,9 @@ footer {
 minidenticon-svg {
   display: inline-block;
   border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  background: #2671ff;
-  margin: 0 10px 10px 0;
+  height: 50px;
+  width: 50px;
+  margin: 0;
   flex-shrink: 0;
 }
 
@@ -234,28 +233,23 @@ minidenticon-svg {
   display: flex;
   flex-direction: column;
   width: calc(100% - 50px);
+  padding: 2px 8px;
+  flex-shrink: 0;
 }
+
+
 
 .messages {
   flex: 1 0 auto;
 }
 
 .msg {
-  display: inline-block;
-  font-size: 11pt;
-  line-height: 13pt;
-  color: rgb(255 255 255 / 70%);
-  margin: 0 0 4px;
-}
-
-.msg:first-of-type {
-  margin-top: 8px;
+  font-size: 12pt;
 }
 
 .timestamp {
-  color: rgb(0 0 0 / 38%);
+  color: rgb(0 0 0 / 70%);
   font-size: 8pt;
-  margin-bottom: 10px;
 }
 
 .username {
@@ -268,16 +262,8 @@ minidenticon-svg {
 
 .msg-self .msg-box {
   border-radius: 6px 0 0 6px;
-  background: #2671ff;
+  background: var(--my-back-color);
   float: right;
-}
-
-.msg-self .user-img {
-  margin: 0 0 10px 10px;
-}
-
-.msg-self .msg {
-  text-align: right;
 }
 
 .msg-self .timestamp {
