@@ -19,7 +19,7 @@ export default function enterName(window, document, settings, handlers) {
 
     const form = document.querySelector(".nameform");
     const input = document.querySelector(".nameinput");
-    const field = document.querySelector(".container");
+    const field = document.querySelector(".content");
     if (settings.mode === "net") {
         field.classList.add("hidden");
     }

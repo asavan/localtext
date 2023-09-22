@@ -21,11 +21,7 @@ function makeid(length) {
 
 function onConnectionAnimation(document, connection) {
     connection.on("socket_open", () => {
-        const grid = document.getElementsByClassName("places")[0];
-        grid.classList.add("loading");
         connection.on("socket_close", () => {
-            grid.classList.remove("loading");
-            grid.classList.add("flying-cards");
         });
     });
 }

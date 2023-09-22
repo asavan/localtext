@@ -1,6 +1,7 @@
 "use strict";
 
 import starter from "./js/starter.js";
+import { minidenticonSvg } from "minidenticons";
 
 // eslint-disable-next-line no-undef
 if (__USE_SERVICE_WORKERS__) {
@@ -10,3 +11,4 @@ if (__USE_SERVICE_WORKERS__) {
 }
 
 starter(window, document);
+export { minidenticonSvg };

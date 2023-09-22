@@ -3,7 +3,7 @@
 	"short_name": "localtext",
     "icons": [
         {
-          "src": "./images/reverse_6cf.svg",
+          "src": "./images/prism.svg",
           "sizes": "any",
           "type": "image/svg+xml",
           "purpose": "any maskable"

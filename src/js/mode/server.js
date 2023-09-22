@@ -2,7 +2,6 @@
 
 import {removeElem, log} from "../helper.js";
 import actionsFunc from "../actions_server.js";
-import actionsFuncUno from "../actions_uno_server.js";
 import qrRender from "../lib/qrcode.js";
 import Queue from "../utils/queue.js";
 import connectionFunc from "../connection/server.js";
@@ -96,17 +95,6 @@ export default function server(window, document, settings, gameFunction) {
         }
 
         game.on("username", actions["username"]);
-
-        game.on("start", ({players, engine}) => {
-            connection.closeSocket();
-            const unoActions = actionsFuncUno(engine);
-            setupProtocol(connection, unoActions, queue);
-            console.log(players);
-            connection.sendAll(toObjJson(players, "start"));
-        });
-
-        game.on("onSeatsFinished", () => game.afterAllJoined());
-        game.on("swap", (id1, id2) => game.swap(id1, id2));
         enterName(window, document, settings, game.getHandlers());
 
         connection.on("disconnect", (id) => {
@@ -123,7 +111,6 @@ export default function server(window, document, settings, gameFunction) {
             clients[id] = {"index": index};
         });
 
-        game.onConnect();
         loop(queue, window);
         resolve(game);
 

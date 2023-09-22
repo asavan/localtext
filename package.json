@@ -44,5 +44,8 @@
     "webpack-dev-server": "^4.15.1",
     "workbox-webpack-plugin": "^7.0.0",
     "ws": "8.14.1"
+  },
+  "dependencies": {
+    "minidenticons": "^4.2.0"
   }
 }
