@@ -187,16 +187,16 @@ footer {
   transition: all 0.15s ease-in-out;
 }
 
-.chat-input input[good] + button {
+.chat-input input.good + button {
   box-shadow: 0 0 2px rgb(0 0 0 / 12%),0 2px 4px rgb(0 0 0 / 24%);
   background: #2671ff;
 }
 
-.chat-input input[good] + button:hover {
+.chat-input input.good + button:hover {
   box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%),0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
-.chat-input input[good] + button path {
+.chat-input input.good + button path {
   fill: white;
 }
 

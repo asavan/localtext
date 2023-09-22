@@ -7,6 +7,15 @@ function stub(message) {
 
 export default function game(window, document, settings) {
 
+    const textInput = document.querySelector(".chat-input input");
+    textInput.addEventListener("keyup", () => {
+        if (textInput.value == "") {
+            textInput.classList.remove("good");
+        } else {
+            textInput.classList.add("good");
+        }
+    });
+
     let players = [];
 
     const handlers = {
