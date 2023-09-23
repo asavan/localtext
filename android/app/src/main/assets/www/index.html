@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Localtext</title>
+    <meta name="description" content="Local text chat">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"/>
+    <meta name="theme-color" content="#ffffff">
+    <link id="favicon" rel="icon" href="./images/envelope.svg" sizes="any" type="image/svg+xml">
+    <link rel="manifest" href="./manifest.json">
+
+<script defer src="main.2ec5ef865ec1fcbaed72.js"></script><style type="text/css">*{box-sizing:border-box;margin:0;padding:0}:root{--main-color:#f0f8ff;--player-color:#7fff00;--field-size:4;--card-width:50px;--color-green:#5a5;--color-red:#f55;--color-yellow:#fa0;--color-blue:#55f;--current-color:#f0f8ff;--inverted-color:#fff;--my-back-color:#e9f5e9}body,html{height:100%}button,input,select,textarea{font-family:inherit;font-size:inherit}body{align-items:center;display:flex;flex-direction:column;font-family:sans-serif;font-size:2rem}ul{list-style-type:none}.content{display:flex;flex:1 0 auto;flex-direction:column;max-width:500px;width:100%}footer{flex:0 0 auto;width:100%}.qrcode.big{left:0;max-width:450px;position:absolute;top:0;width:100%}.qrcode{margin:auto;width:200px}.hidden{display:none}.row{display:flex;flex-direction:row;justify-content:space-between}.mirror{transform:scaleX(-1)}.overlay{background:rgba(0,0,0,.7);inset:0;opacity:0;position:fixed;transition:opacity .7s;visibility:hidden}.overlay.show{opacity:1;visibility:visible}.nameinput{padding:10px 2px;width:220px}.namesubmit{background:#0d6efd;color:#fff;padding:3px 10px}.spinner{align-items:center;background-color:#000;color:#fff;display:flex;justify-content:center;min-height:100vh}.spinner:after{animation:change-content .8s linear infinite;content:"⠋";display:block;font-size:80px}@keyframes change-content{10%{content:"⠙"}20%{content:"⠹"}30%{content:"⠸"}40%{content:"⠼"}50%{content:"⠴"}60%{content:"⠦"}70%{content:"⠧"}80%{content:"⠇"}90%{content:"⠏"}}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background-color:#4c4c6a;border-radius:2px}.chatbox{box-shadow:0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);display:flex;flex-direction:column;margin-bottom:5px;max-height:calc(100vh - 60px);min-height:max(calc(100vh - 270px),250px);overflow:hidden}@media (height >= 460px){.chatbox{max-height:calc(100vh - 270px)}}.chat-window{flex:auto;max-height:calc(100vh - 60px);overflow:auto}.chat-input{border-top:1px solid #2671ff;box-shadow:0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);flex:0 0 auto;height:60px}.chat-input input{border:none;font-size:1rem;height:59px;line-height:60px;outline:0 none;padding:0;text-indent:10px;width:calc(100% - 60px)}.chat-input button{background:rgba(61,114,237,.2);border:none;border-radius:50%;float:right;height:40px;margin:10px;outline:0 none;padding:2px 0 0;transition:all .15s ease-in-out;width:40px}.chat-input input.good+button{background:#2671ff;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24)}.chat-input input.good+button:hover{box-shadow:0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}.chat-input button path{fill:#fff}.msg-container{display:inline-block;padding:0;position:relative;width:100%}.msg-box{align-items:center;border-radius:0 6px 6px 0;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);display:flex;float:left;max-width:80%;width:auto}minidenticon-svg{border-radius:50%;display:inline-block;flex-shrink:0;height:50px;margin:0;width:50px}.flr{flex:1 0 auto;flex-shrink:0;padding:2px 8px}.flr>*{padding:1px}.messages{flex:1 0 auto}.msg{font-size:1rem}.timestamp{color:rgba(0,0,0,.7);float:right;font-size:12px;text-align:right}.username{color:#3d72ed;display:block;font-family:sans-serif;font-size:14px;font-weight:500;margin-right:3px}.posttime{margin-left:3px}.msg-self .msg-box{background:var(--my-back-color);border-radius:6px 0 0 6px;float:right}.msg-self .username,.msg-self minidenticon-svg{display:none}</style></head>
+
+<body>
+
+<div class="name-form-cont"></div>
+<div class="content">
+    <section class="chatbox">
+        <section class="chat-window">
+        </section>
+        <form class="chat-input">
+            <input type="text" autocomplete="on" placeholder="Type a message" />
+            <button type="submit">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="rgba(0,0,0,.38)" d="M17,12L12,17V14H8V10H12V7L17,12M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L5,8.09V15.91L12,19.85L19,15.91V8.09L12,4.15Z" /></svg>
+            </button>
+        </form>
+    </section>
+    <div class="log"></div>
+    <div class="qrcode"></div>
+</div>
+<footer>
+</footer>
+
+<template id="nameform">
+    <form class="nameform">
+        <label for="nameinput">Enter your name:</label>
+        <div class="row">
+        <input class="nameinput"  id="nameinput" type="text" name="name" />
+        <input class="namesubmit" type="submit" value="Send">
+        </div>
+    </form>
+</template>
+
+<template id="message-template">
+    <article class="msg-container">
+        <div class="msg-box">
+            <minidenticon-svg username="sasha"></minidenticon-svg>
+            <div class="flr">
+                <span class="username"></span>
+                <div class="messages">
+                    <p class="msg">
+                        Short text
+                    </p>
+                </div>
+                <span class="timestamp"></span>
+            </div>
+        </div>
+    </article>
+</template>
+
+</body>
+</html>

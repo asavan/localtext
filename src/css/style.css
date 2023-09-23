@@ -154,10 +154,6 @@ footer {
 }
 
 @media (height >= 460px) {
-  div {
-    background: yellow;
-  }
-
   .chatbox {
     max-height: calc(100vh - 270px);
   }

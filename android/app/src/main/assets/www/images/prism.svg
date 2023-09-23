@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="270px" height="198px" viewBox="0 0 270 198" enable-background="new 0 0 270 198" xml:space="preserve">
+<rect fill="#FEC200" width="270" height="198"/>
+<polygon fill="#BC1E47" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" points="27,27 27,171 99,99 "/>
+<polygon fill="#CC33CC" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" points="27,171 243,171 171,99 99,99 "/>
+<polygon fill="#0081CD" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" points="243,171 243,27 171,99 "/>
+<polygon fill="#009246" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" points="243,27 27,27 99,99 171,99 "/>
+<circle fill="#CC33CC" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" cx="27" cy="27" r="13.5"/>
+<circle fill="#0081CD" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" cx="99" cy="99" r="13.5"/>
+<circle fill="#C49A6C" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" cx="27" cy="171" r="13.5"/>
+<circle fill="#FEC200" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" cx="171" cy="99" r="13.5"/>
+<circle fill="#BC1E47" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" cx="243" cy="27" r="13.5"/>
+<circle fill="#009246" stroke="#231F20" stroke-width="2" stroke-miterlimit="10" cx="243" cy="171" r="13.5"/>
+</svg>
