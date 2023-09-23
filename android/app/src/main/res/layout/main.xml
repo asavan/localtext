@@ -12,17 +12,6 @@
     </Space>
 
     <Button
-        android:id="@+id/ai"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="@string/ai" />
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </Space>
-
-    <Button
         android:id="@+id/twa_ai"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -83,18 +72,6 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="@string/launch_twa_127" />
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </Space>
-
-
-    <Button
-        android:id="@+id/webview_localhost"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="@string/webview" />
     <Space
         android:layout_width="0dp"
         android:layout_height="0dp"

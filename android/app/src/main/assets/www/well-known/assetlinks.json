@@ -19,5 +19,14 @@
       "EA:A4:A8:A4:DF:4B:6B:E4:D8:0B:3C:AF:E8:80:9B:93:E1:A8:6C:EE:22:35:C9:FD:8D:09:46:B2:28:3F:1A:73"
     ]
   }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "ru.asavan.localtext",
+    "sha256_cert_fingerprints":
+    ["28:1C:08:6A:82:62:97:D2:5D:37:D8:33:42:FA:EC:91:9C:EA:81:63:04:27:0A:66:D2:63:B2:1B:7F:93:49:83"]
+  }
 }
 ]

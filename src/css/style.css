@@ -16,6 +16,7 @@
   --current-color: aliceblue;
   --inverted-color: white;
   --my-back-color: #E9F5E9;
+  --borders-color: #2671ff;
 }
 
 
@@ -64,7 +65,7 @@ footer {
 
 .qrcode {
   width: 200px;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .hidden {
@@ -145,63 +146,72 @@ footer {
 
 .chatbox {
   display: flex;
-  max-height: calc(100vh - 60px);
-  min-height: max(calc(100vh - 270px), 250px);
+  max-height: 100dvh;
+  min-height: max(calc(100vh - 250px), 250px);
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
   margin-bottom: 5px;
 }
 
+
+.chat-window {
+  flex: auto;
+  max-height: calc(100dvh - 60px);
+  overflow: auto;
+}
+
 @media (height >= 460px) {
-  .chatbox {
+  .chat-window {
     max-height: calc(100vh - 270px);
   }
 }
 
-.chat-window {
-  flex: auto;
-  max-height: calc(100vh - 60px);
-  overflow: auto;
-}
-
 .chat-input {
   flex: 0 0 auto;
-  height: 60px;
-  border-top: 1px solid #2671ff;
+  display: flex;
+  align-items: center;
+  border-color: #2671ff;
   box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
 }
 
 .chat-input input {
-  height: 59px;
-  line-height: 60px;
-  outline: 0 none;
-  border: none;
-  width: calc(100% - 60px);
-  text-indent: 10px;
+  height: 100%;
+  flex-grow: 1;
   font-size: 1rem;
-  padding: 0;
+  padding: 10px 2px;
+  border-color: aliceblue;
+  border-style: solid;
+  outline-color: #2671ff;
 }
 
 .chat-input button {
-  float: right;
-  outline: 0 none;
-  border: none;
-  background: rgb(61 114 237 / 20%);
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  padding: 2px 0 0;
-  margin: 10px;
+  outline-color: #2671ff;
+  background-color: white;
+  border: 0;
   transition: all 0.15s ease-in-out;
 }
 
-.chat-input input.good + button {
+.circle {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin: 5px;
+  background: rgb(61 114 237 / 20%);
+  display: grid;
+}
+
+.circle svg {
+    display: block;
+    margin: auto;
+}
+
+.chat-input input.good + button .circle {
   box-shadow: 0 0 2px rgb(0 0 0 / 12%),0 2px 4px rgb(0 0 0 / 24%);
   background: #2671ff;
 }
 
-.chat-input input.good + button:hover {
+.chat-input input.good + button:hover .circle {
   box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%),0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
@@ -236,9 +246,7 @@ minidenticon-svg {
 }
 
 .flr {
-  flex: 1 0 auto;
   padding: 2px 8px;
-  flex-shrink: 0;
 }
 
 .flr > *{

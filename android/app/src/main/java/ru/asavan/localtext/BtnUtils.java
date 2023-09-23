@@ -38,7 +38,15 @@ public class BtnUtils {
     }
 
     public void addButtonBrowser(final String host, Map<String, String> parameters, int btnId) {
+        addButtonBrowser(host, parameters, btnId, null);
+    }
+
+    public void addButtonBrowser(final String host, Map<String, String> parameters, int btnId, String text) {
         Button btn = activity.findViewById(btnId);
+        if (text != null && !text.isEmpty()) {
+            String newText = btn.getText() + " " + text;
+            btn.setText(newText);
+        }
         btn.setOnClickListener(v -> launchBrowser(host, parameters));
     }
 
@@ -54,7 +62,8 @@ public class BtnUtils {
     public void addButtonTwa(String host, Map<String, String> parameters, int id, String text) {
         Button btn = activity.findViewById(id);
         if (text != null) {
-            btn.setText(text);
+            String newText = btn.getText() + " " + text;
+            btn.setText(newText);
         }
         btn.setOnClickListener(v -> launchTwa(host, parameters));
     }
@@ -72,7 +81,7 @@ public class BtnUtils {
     }
 
 
-    private void launchTwa(String host, Map<String, String> parameters) {
+    public void launchTwa(String host, Map<String, String> parameters) {
         startServerAndSocket();
         Uri launchUri = Uri.parse(UrlUtils.getLaunchUrl(host, parameters));
         TwaLauncher launcher = new TwaLauncher(activity);

@@ -12,6 +12,18 @@
         \"relation\": [\"delegate_permission/common.handle_all_urls\"],
         \"target\": {
         \"namespace\": \"web\",
+        \"site\": \"http://127.0.0.1:8088\"}
+        },
+        {
+        \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+        \"target\": {
+        \"namespace\": \"web\",
+        \"site\": \"http://127.0.0.1\"}
+        },
+        {
+        \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+        \"target\": {
+        \"namespace\": \"web\",
         \"site\": \"http://localhost:8080\"}
         },
         {
