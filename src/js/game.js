@@ -1,11 +1,12 @@
 "use strict"; // jshint ;_;
 import enterName from "./names.js";
+// import {delay} from "./helper.js";
 
 function stub(message) {
     console.trace("Stub " + message);
 }
 
-function addMessage(document, messageObj, className) {
+async function addMessage(document, messageObj, className) {
     const messageList = document.querySelector(".chat-window");
     const mTemplate = document.querySelector("#message-template");
     const mClone = mTemplate.content.cloneNode(true).firstElementChild;
@@ -16,6 +17,7 @@ function addMessage(document, messageObj, className) {
     const date = new Date(messageObj.date);
     mClone.querySelector(".timestamp").innerText = date.toLocaleTimeString();
     messageList.appendChild(mClone);
+    // await delay(200);
     messageList.scrollTop = messageList.scrollHeight;
 }
 
@@ -30,7 +32,13 @@ export default function game(window, document, settings) {
         }
     });
 
+    function onWindowResize() {
+        const messageList = document.querySelector(".chat-window");
+        messageList.scrollTop = messageList.scrollHeight;
+    }
 
+    textInput.focus();
+    window.onresize = onWindowResize;
 
 
     let players = [];
@@ -65,6 +73,7 @@ export default function game(window, document, settings) {
     const form = document.querySelector(".chat-input");
     form.addEventListener("submit", (e) => {
         e.preventDefault();
+        textInput.focus({ preventScroll: true });
         if (username === "") {
             enterName(window, document, settings, handlers);
             return;

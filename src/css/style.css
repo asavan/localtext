@@ -34,6 +34,7 @@ body {
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
+  font-family: sans-serif;
 }
 
 ul {
@@ -143,19 +144,29 @@ footer {
 }
 
 .chatbox {
-  height: 400px;
-  max-height: 600px;
   display: flex;
+  max-height: calc(100vh - 60px);
+  min-height: max(calc(100vh - 270px), 250px);
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
+  margin-bottom: 5px;
+}
+
+@media (height >= 460px) {
+  div {
+    background: yellow;
+  }
+
+  .chatbox {
+    max-height: calc(100vh - 270px);
+  }
 }
 
 .chat-window {
   flex: auto;
-  max-height: calc(100% - 60px);
+  max-height: calc(100vh - 60px);
   overflow: auto;
-  flex-shrink: 0;
 }
 
 .chat-input {
@@ -172,7 +183,7 @@ footer {
   border: none;
   width: calc(100% - 60px);
   text-indent: 10px;
-  font-size: 12pt;
+  font-size: 1rem;
   padding: 0;
 }
 
@@ -180,7 +191,7 @@ footer {
   float: right;
   outline: 0 none;
   border: none;
-  background: rgb(0 0 0 / 50%);
+  background: rgb(61 114 237 / 20%);
   height: 40px;
   width: 40px;
   border-radius: 50%;
@@ -198,7 +209,7 @@ footer {
   box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%),0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
-.chat-input input.good + button path {
+.chat-input button path {
   fill: white;
 }
 

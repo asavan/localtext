@@ -1,7 +1,7 @@
 "use strict";
 
 import {removeElem, log} from "../helper.js";
-import actionsFunc from "../actions_server.js";
+import actionsFunc from "../actions.js";
 import qrRender from "../lib/qrcode.js";
 import Queue from "../utils/queue.js";
 import connectionFunc from "../connection/socket.js";
@@ -74,10 +74,9 @@ function setupProtocol(connection, actions, queue) {
 //    }
 //}
 
-export default function server(window, document, settings, gameFunction) {
+export default function gameMode(window, document, settings, gameFunction) {
     const clients = {};
     let index = 0;
-    clients["server"] = {"index": index};
 
     return new Promise((resolve, reject) => {
 

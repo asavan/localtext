@@ -2,8 +2,8 @@
 
 function init(game) {
     return {
-        "move": (data) => {
-            return game.onMessage(data);
+        "message": (m) => {
+            return game.onMessage(m);
         }
     };
 }
