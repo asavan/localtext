@@ -163,7 +163,7 @@ footer {
 
 @media (height >= 460px) {
   .chat-window {
-    max-height: calc(100vh - 270px);
+    max-height: calc(100dvh - 270px);
   }
 }
 
@@ -202,8 +202,8 @@ footer {
 }
 
 .circle svg {
-    display: block;
-    margin: auto;
+  display: block;
+  margin: auto;
 }
 
 .chat-input input.good + button .circle {
