@@ -12,7 +12,7 @@ function toObjJson(v, method) {
         "method": method
     };
     value[method] = v;
-    return JSON.stringify(value);
+    return value;
 }
 
 function makeid(length) {
@@ -42,18 +42,32 @@ function loop(queue, window) {
 }
 
 function setupProtocol(connection, actions, queue) {
-    connection.on("recv", (data, id) => {
-        const obj = JSON.parse(data);
-        console.log(data, obj);
+    connection.on("recv", (obj, id) => {
         const res = obj[obj.method];
         const callback = actions[obj.method];
         if (typeof callback === "function") {
-            console.log("recv2");
-            queue.enqueue({callback, res, fName: obj.method, id, data});
-        } else {
-            console.log("recv3", actions, actions[data.method], data.method, typeof callback);
+            queue.enqueue({callback, res, fName: obj.method, id});
         }
     });
+}
+
+function networkLoggerFunc(logger, settings) {
+    const logInner = (data) => {
+        if (!settings.networkDebug || !logger) {
+            return;
+        }
+        return log(data, logger);
+    };
+    const errorInner = (data) => {
+        if (!logger) {
+            return;
+        }
+        return error(data, logger);
+    };
+    return {
+        log: logInner,
+        error: errorInner
+    };
 }
 
 //function setupMedia() {
@@ -73,34 +87,10 @@ export default function gameMode(window, document, settings, gameFunction) {
 
         const myId = makeid(6);
         const logger = settings.logger ? document.querySelector(settings.logger) : null;
-        const networkLoggerFunc = () => {
-            const logInner = (data) => {
-                if (!settings.networkDebug || !logger) {
-                    return;
-                }
-                return log(data, logger);
-            };
-            const errorInner = (data) => {
-                if (!logger) {
-                    return;
-                }
-                return error(data, logger);
-            };
-            return {
-                log: logInner,
-                error: errorInner
-            };
-        };
-        const networkLogger = networkLoggerFunc();
+        const networkLogger = networkLoggerFunc(logger, settings);
         const connection = connectionFunc(settings, window.location, myId, networkLogger);
         connection.on("error", (e) => {
             networkLogger.error(e, logger);
-        });
-        connection.on("socket_open", async () => {
-            const code = makeQr(window, document, settings);
-            connection.on("socket_close", () => {
-                removeElem(code);
-            });
         });
 
         const queue = Queue();
@@ -111,6 +101,10 @@ export default function gameMode(window, document, settings, gameFunction) {
         loop(queue, window);
 
         connection.connect().then(con => {
+            const code = makeQr(window, document, settings);
+            connection.on("socket_close", () => {
+                removeElem(code);
+            });
             for (const handlerName of game.actionKeys()) {
                 game.on(handlerName, (n) => con.sendAll(toObjJson(n, handlerName)));
             }

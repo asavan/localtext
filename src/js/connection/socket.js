@@ -55,7 +55,6 @@ export default function connectionFunc(settings, location, id, logger) {
             };
 
             const sendAllExceptMe = (data) => {
-                console.log(logger);
                 logger.log(data);
                 return signaling.send("gamemessage", data, "all");
             };
@@ -65,7 +64,6 @@ export default function connectionFunc(settings, location, id, logger) {
             const sendTo = stub;
 
             function onOpen() {
-                handlers["open"](id);
                 resolve({sendTo, sendAllExceptMe, sendAll});
             }
         });

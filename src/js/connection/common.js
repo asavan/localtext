@@ -27,13 +27,12 @@ function createSignalingChannel(id, socketUrl, logger, handlers, onOpen) {
     }
 
     ws.onopen = function() {
-        handlers["socket_open"](id);
         return onOpen(id);
     };
 
     ws.onclose = function (e) {
         logger.log("Websocket closed " + e.code + " " + e.reason);
-        handlers["socket_close"](id);
+        return handlers["socket_close"](id);
     };
 
     ws.onmessage = function (e) {
@@ -49,7 +48,7 @@ function createSignalingChannel(id, socketUrl, logger, handlers, onOpen) {
     };
     ws.onerror = function (e) {
         logger.error(e);
-        handlers["error"]("ws error");
+        return handlers["error"]("ws error");
     };
     return result;
 }

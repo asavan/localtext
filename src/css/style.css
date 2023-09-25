@@ -69,10 +69,6 @@ footer {
   margin: auto;
 }
 
-.hidden {
-  display: none;
-}
-
 .row {
   display: flex;
   flex-direction: row;
@@ -295,5 +291,9 @@ minidenticon-svg {
 }
 
 .msg-self minidenticon-svg {
+  display: none;
+}
+
+.hidden {
   display: none;
 }

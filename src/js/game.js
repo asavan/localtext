@@ -20,7 +20,7 @@ async function addMessage(document, messageObj, className) {
     messageList.scrollTop = messageList.scrollHeight;
 }
 
-function handleResize(window, document) {
+function handleResize(window, document, callback) {
     function onWindowResize() {
         const messageList = document.querySelector(".chat-window");
         messageList.scrollTop = messageList.scrollHeight;
@@ -31,6 +31,9 @@ function handleResize(window, document) {
             root.style.setProperty("--window-inner-height", newH);
         }
         window.scrollTo({ top: 0, behavior: "smooth" });
+        if (typeof callback === "function") {
+            callback();
+        }
     }
     window.onresize = onWindowResize;
     if (window.visualViewport) {
@@ -38,33 +41,60 @@ function handleResize(window, document) {
     }
 }
 
-function setupInput(textInput) {
+function setupInput(textInput, callback) {
     const onChange = () => {
         if (textInput.value == "") {
             textInput.classList.remove("good");
         } else {
             textInput.classList.add("good");
         }
+        if (typeof callback === "function") {
+            callback();
+        }
     };
     textInput.addEventListener("keyup", onChange);
     textInput.addEventListener("change", onChange);
 }
 
+function vibrateIfNeeded(inactivePeriod, lastInteractTime) {
+    if (inactivePeriod && window.navigator.vibrate) {
+        const now = Date.now();
+        if ((now - lastInteractTime) > inactivePeriod * 1000) {
+            window.navigator.vibrate([200]);
+        }
+    }
+}
+
 export default function game(window, document, settings) {
 
+    const form = document.querySelector(".chat-input");
     const textInput = document.querySelector(".chat-input input");
-    setupInput(textInput);
-
+    let lastInteractTime = Date.now();
     let username = "";
-    handleResize(window, document);
+    let connected = false;
+
+
+    function updateLastInteract() {
+        lastInteractTime = Date.now();
+    }
+    setupInput(textInput, updateLastInteract);
+    handleResize(window, document, updateLastInteract);
     console.log(settings.mode);
 
     const handlers = {
         "message": stub
     };
 
+    function tryEnableInput() {
+        if (connected && username) {
+            form.classList.remove("hidden");
+        }
+    }
+
     const setUsername = (name) => {
         username = name;
+        updateLastInteract();
+        tryEnableInput();
         textInput.focus();
     };
 
@@ -83,12 +113,13 @@ export default function game(window, document, settings) {
 
     function onMessage(message) {
         addMessage(document, message, "msg-remote");
+        vibrateIfNeeded(settings.vibrate, lastInteractTime);
         return true;
     }
 
-    const form = document.querySelector(".chat-input");
     form.addEventListener("submit", (e) => {
         e.preventDefault();
+        updateLastInteract();
         textInput.focus({ preventScroll: true });
         if (username === "") {
             enterName(window, document, setUsername);
@@ -107,6 +138,8 @@ export default function game(window, document, settings) {
     }
 
     const onConnect = () => {
+        connected = true;
+        tryEnableInput();
     };
 
     const actionKeys = () => Object.keys(handlers);
