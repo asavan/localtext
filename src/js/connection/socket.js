@@ -3,7 +3,7 @@
 import commonConnection from "./common.js";
 
 function stub(message) {
-    console.log("Stub " + message);
+    console.trace("Stub " + message);
 }
 
 export default function connectionFunc(settings, location, id, logger) {
@@ -14,7 +14,7 @@ export default function connectionFunc(settings, location, id, logger) {
         "socket_close": stub,
         "close": stub,
         "error": stub,
-        "disconnect": stub,
+        "disconnect": stub
     };
 
     function on(name, f) {
@@ -32,15 +32,12 @@ export default function connectionFunc(settings, location, id, logger) {
     }
 
     function connect() {
-        console.log("connect10");
         return new Promise((resolve, reject) => {
-            console.log("connect1");
             const socketUrl = getWebSocketUrl();
             if (socketUrl == null) {
                 reject("Can't determine ws address");
             }
             const signaling = commonConnection.createSignalingChannel(id, socketUrl, logger, handlers, onOpen);
-            console.log("connect2");
             signaling.onmessage = async function(json) {
                 if (json.from === id) {
                     logger.error("same user");
@@ -53,22 +50,19 @@ export default function connectionFunc(settings, location, id, logger) {
                 }
 
                 if (json.action === "gamemessage") {
-                    console.log("recv socket", json.data);
                     await handlers["recv"](json.data, json.from);
                 }
             };
 
             const sendAllExceptMe = (data) => {
+                console.log(logger);
                 logger.log(data);
                 return signaling.send("gamemessage", data, "all");
             };
 
-            const sendAll = (data) => {
-                logger.log(data);
-                return signaling.send("gamemessage", data, "all");
-            };
+            const sendAll = sendAllExceptMe;
 
-            const sendTo = () => {};
+            const sendTo = stub;
 
             function onOpen() {
                 handlers["open"](id);

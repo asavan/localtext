@@ -18,17 +18,26 @@ export function removeElem(el) {
     }
 }
 
-export function log(settings, message, el) {
-    if (settings.logger) {
-        if (typeof message == "object") {
-            el.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + "<br />";
-        } else {
-            el.innerHTML += message + "<br />";
-        }
+function logToHtml(settings, message, el) {
+    if (!el) {
+        return;
     }
+    if (typeof message == "object") {
+        el.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + "<br />";
+    } else {
+        el.innerHTML += message + "<br />";
+    }
+}
+
+export function log(message, el) {
+    logToHtml(message, el);
     console.log(message);
 }
 
+export function error(settings, message, el) {
+    logToHtml(settings, message, el);
+    console.error(message);
+}
 
 function stringToBoolean(string){
     switch(string.toLowerCase().trim()){

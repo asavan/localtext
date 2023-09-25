@@ -1,15 +1,11 @@
 "use strict"; // jshint ;_;
 
-export default function enterName(window, document, settings, handlers) {
+export default function enterName(window, document, callback) {
     const formCont = document.querySelector(".name-form-cont");
     const data = window.sessionStorage.getItem("username");
     if (data) {
         formCont.replaceChildren();
-        if (handlers) {
-            console.log("Send name data", data);
-            // remove "server" from here
-            handlers["username"](data, "server");
-        }
+        callback(data);
         return;
     }
 
@@ -19,21 +15,11 @@ export default function enterName(window, document, settings, handlers) {
 
     const form = document.querySelector(".nameform");
     const input = document.querySelector(".nameinput");
-    const field = document.querySelector(".content");
-    if (settings.mode === "net") {
-        field.classList.add("hidden");
-    }
+    input.focus();
 
     function onName(name) {
-        console.log("On name", name, handlers);
         window.sessionStorage.setItem("username", name);
-
-        if (handlers) {
-            // remove "server" from here
-            handlers["username"](name, "server");
-        }
-        form.classList.add("hidden");
-        field.classList.remove("hidden");
+        callback(name);
         formCont.replaceChildren();
     }
 

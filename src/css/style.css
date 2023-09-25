@@ -17,6 +17,7 @@
   --inverted-color: white;
   --my-back-color: #E9F5E9;
   --borders-color: #2671ff;
+  --window-inner-height: 100dvh;
 }
 
 
@@ -65,7 +66,7 @@ footer {
 
 .qrcode {
   width: 200px;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .hidden {
@@ -98,7 +99,7 @@ footer {
 
 .nameinput {
   padding: 10px 2px;
-  width: 220px;
+  flex-grow: 1;
 }
 
 .namesubmit {
@@ -107,13 +108,17 @@ footer {
   padding: 3px 10px;
 }
 
+.nameform {
+  height: 100px;
+}
+
 .spinner {
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: black;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .spinner::after {
@@ -146,24 +151,23 @@ footer {
 
 .chatbox {
   display: flex;
-  max-height: 100dvh;
-  min-height: max(calc(100vh - 250px), 250px);
   flex-direction: column;
+  max-height: 100dvh;
+  min-height: min(290px, 100dvh);
   overflow: hidden;
   box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
-  margin-bottom: 5px;
 }
 
 
 .chat-window {
   flex: auto;
-  max-height: calc(100dvh - 60px);
   overflow: auto;
 }
 
-@media (height >= 460px) {
-  .chat-window {
-    max-height: calc(100dvh - 270px);
+@media (height >= 540px) {
+  .chatbox {
+    max-height: min(calc(100dvh - 200px), var(--window-inner-height));
+    min-height: calc(100dvh - 310px);
   }
 }
 
@@ -171,7 +175,7 @@ footer {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  border-color: #2671ff;
+  border-color: var(--borders-color);
   box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
 }
 
@@ -179,14 +183,13 @@ footer {
   height: 100%;
   flex-grow: 1;
   font-size: 1rem;
-  padding: 10px 2px;
-  border-color: aliceblue;
-  border-style: solid;
-  outline-color: #2671ff;
+  padding: 0 5px;
+  border: none;
+  outline-color: var(--borders-color);
 }
 
 .chat-input button {
-  outline-color: #2671ff;
+  outline-color: var(--borders-color);
   background-color: white;
   border: 0;
   transition: all 0.15s ease-in-out;

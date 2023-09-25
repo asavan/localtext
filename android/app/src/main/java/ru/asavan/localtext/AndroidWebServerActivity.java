@@ -42,11 +42,11 @@ public class AndroidWebServerActivity extends Activity {
         mainParams.put("wh", hostUtils.getSocketHost(IpUtils.LOCALHOST));
         mainParams.put("sh", host);
         {
-            btnUtils.addButtonTwa(WEB_GAME_URL, mainParams, R.id.twa_ai);
-            btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.twa_ai_localhost);
-            btnUtils.addButtonWebView(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.ai_localhost);
+            btnUtils.addButtonTwa(WEB_GAME_URL, mainParams, R.id.twa_web);
+            btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.twa_localhost);
+            btnUtils.addButtonWebView(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.webview_localhost);
             btnUtils.addButtonBrowser(host, mainParams, R.id.launch_browser, host);
-            btnUtils.addButtonTwa(host, mainParams, R.id.twa_real_ip, host);
+            btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCAL_IP), mainParams, R.id.twa_127_2);
         }
         {
             Map<String, String> b = new LinkedHashMap<>();

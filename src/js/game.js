@@ -1,6 +1,5 @@
 "use strict"; // jshint ;_;
 import enterName from "./names.js";
-// import {delay} from "./helper.js";
 
 function stub(message) {
     console.trace("Stub " + message);
@@ -21,39 +20,56 @@ async function addMessage(document, messageObj, className) {
     messageList.scrollTop = messageList.scrollHeight;
 }
 
-export default function game(window, document, settings) {
+function handleResize(window, document) {
+    function onWindowResize() {
+        const messageList = document.querySelector(".chat-window");
+        messageList.scrollTop = messageList.scrollHeight;
+        if (window.visualViewport) {
+            const newH = Math.floor(window.visualViewport.height) + "px";
+            console.log(newH);
+            const root = document.documentElement;
+            root.style.setProperty("--window-inner-height", newH);
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    window.onresize = onWindowResize;
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", onWindowResize);
+    }
+}
 
-    const textInput = document.querySelector(".chat-input input");
-    textInput.addEventListener("keyup", () => {
+function setupInput(textInput) {
+    const onChange = () => {
         if (textInput.value == "") {
             textInput.classList.remove("good");
         } else {
             textInput.classList.add("good");
         }
-    });
+    };
+    textInput.addEventListener("keyup", onChange);
+    textInput.addEventListener("change", onChange);
+}
 
-    function onWindowResize() {
-        const messageList = document.querySelector(".chat-window");
-        messageList.scrollTop = messageList.scrollHeight;
-    }
+export default function game(window, document, settings) {
 
-    textInput.focus();
-    window.onresize = onWindowResize;
+    const textInput = document.querySelector(".chat-input input");
+    setupInput(textInput);
 
-
-    let players = [];
     let username = "";
+    handleResize(window, document);
+    console.log(settings.mode);
 
     const handlers = {
-        "message": stub,
-        "username": stub
+        "message": stub
     };
 
     const setUsername = (name) => {
         username = name;
+        textInput.focus();
     };
 
-    // enterName(window, document, settings, game.getHandlers());
+    enterName(window, document, setUsername);
+
     function sendMessage(text) {
         const now = Date.now();
         const messageObj = {
@@ -75,7 +91,7 @@ export default function game(window, document, settings) {
         e.preventDefault();
         textInput.focus({ preventScroll: true });
         if (username === "") {
-            enterName(window, document, settings, handlers);
+            enterName(window, document, setUsername);
             return;
         }
         if (textInput.value === "") {
@@ -83,41 +99,22 @@ export default function game(window, document, settings) {
         }
         sendMessage(textInput.value);
         textInput.value = "";
-        textInput.classList.remove("good");
+        // textInput.classList.remove("good");
     });
-
 
     function on(name, f) {
         handlers[name] = f;
     }
 
-    const join = (ind, name, external_id) => {
-        players[ind] = {"name": name, "external_id": external_id};
-        return true;
-    };
-
-    const disconnect = (external_id) => {
-        console.log("disconnect", external_id);
-        const old_size = players.length;
-        players = players.filter(p => p.external_id != external_id);
-        const new_size = players.length;
-        return old_size > new_size;
-    };
-
     const onConnect = () => {
-        console.log("onConnect", handlers);
-        enterName(window, document, settings, handlers);
     };
 
     const actionKeys = () => Object.keys(handlers);
 
     return {
         on,
-        join,
         onConnect,
-        disconnect,
         actionKeys,
-        onMessage,
-        setUsername
+        onMessage
     };
 }

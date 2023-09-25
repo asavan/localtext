@@ -1,6 +1,6 @@
 "use strict";
 
-import {removeElem, log} from "../helper.js";
+import {removeElem, log, error} from "../helper.js";
 import actionsFunc from "../actions.js";
 import qrRender from "../lib/qrcode.js";
 import Queue from "../utils/queue.js";
@@ -31,16 +31,9 @@ function loop(queue, window) {
 
     async function step() {
         if (!queue.isEmpty() && !inProgress) {
-            const {callback, res, fName, id, data} = queue.dequeue();
-            console.log("Progress start", fName, inProgress);
+            const {callback, res, id} = queue.dequeue();
             inProgress = true;
-            const validate = await callback(res, id);
-            if (validate) {
-                // connection.sendAll(data);
-            } else {
-                console.error("Bad move", data);
-            }
-            // console.log("Progress stop", fName, inProgress);
+            await callback(res, id);
             inProgress = false;
         }
         window.requestAnimationFrame(step);
@@ -75,16 +68,33 @@ function setupProtocol(connection, actions, queue) {
 //}
 
 export default function gameMode(window, document, settings, gameFunction) {
-    const clients = {};
-    let index = 0;
 
     return new Promise((resolve, reject) => {
 
         const myId = makeid(6);
-        const connection = connectionFunc(settings, window.location, myId, console);
-        const logger = document.getElementsByClassName("log")[0];
+        const logger = settings.logger ? document.querySelector(settings.logger) : null;
+        const networkLoggerFunc = () => {
+            const logInner = (data) => {
+                if (!settings.networkDebug || !logger) {
+                    return;
+                }
+                return log(data, logger);
+            };
+            const errorInner = (data) => {
+                if (!logger) {
+                    return;
+                }
+                return error(data, logger);
+            };
+            return {
+                log: logInner,
+                error: errorInner
+            };
+        };
+        const networkLogger = networkLoggerFunc();
+        const connection = connectionFunc(settings, window.location, myId, networkLogger);
         connection.on("error", (e) => {
-            log(settings, e, logger);
+            networkLogger.error(e, logger);
         });
         connection.on("socket_open", async () => {
             const code = makeQr(window, document, settings);
@@ -95,37 +105,18 @@ export default function gameMode(window, document, settings, gameFunction) {
 
         const queue = Queue();
         const game = gameFunction(window, document, settings);
-        const actions = actionsFunc(game, clients);
+        const actions = actionsFunc(game);
         setupProtocol(connection, actions, queue);
-
-
-        connection.on("disconnect", (id) => {
-            const is_disconnected = game.disconnect(id);
-            if (is_disconnected) {
-                --index;
-                delete clients[id];
-            }
-            console.log(id, index);
-        });
-
-        connection.on("open", (id) => {
-            console.log("Connected2");
-            ++index;
-            clients[id] = {"index": index};
-        });
 
         loop(queue, window);
 
-        console.log(connection);
         connection.connect().then(con => {
-            console.log("Connected");
             for (const handlerName of game.actionKeys()) {
                 game.on(handlerName, (n) => con.sendAll(toObjJson(n, handlerName)));
             }
-            game.on("username", (n) => game.setUsername(n));
             game.onConnect();
         }).catch(e => {
-            log(settings, e, logger);
+            networkLogger.error(e, logger);
             reject(e);
         });
 

@@ -2,19 +2,6 @@
 
 function stub() {}
 
-function stringifyEvent(e) {
-    const obj = {};
-    for (const k in e) {
-        obj[k] = e[k];
-    }
-    return JSON.stringify(obj, (k, v) => {
-        if (v instanceof Node) return "Node";
-        if (v instanceof Window) return "Window";
-        return v;
-    }, " ");
-}
-
-
 function createSignalingChannel(id, socketUrl, logger, handlers, onOpen) {
     const ws = new WebSocket(socketUrl);
 
@@ -44,8 +31,8 @@ function createSignalingChannel(id, socketUrl, logger, handlers, onOpen) {
         return onOpen(id);
     };
 
-    ws.onclose = function () {
-        console.log("Websocket closed");
+    ws.onclose = function (e) {
+        logger.log("Websocket closed " + e.code + " " + e.reason);
         handlers["socket_close"](id);
     };
 
@@ -62,7 +49,7 @@ function createSignalingChannel(id, socketUrl, logger, handlers, onOpen) {
     };
     ws.onerror = function (e) {
         logger.error(e);
-        handlers["error"](stringifyEvent(e));
+        handlers["error"]("ws error");
     };
     return result;
 }

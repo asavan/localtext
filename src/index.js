@@ -11,4 +11,4 @@ if (__USE_SERVICE_WORKERS__) {
 }
 
 starter(window, document);
-export { minidenticonSvg };
+window.minidenticonSvg = minidenticonSvg;
