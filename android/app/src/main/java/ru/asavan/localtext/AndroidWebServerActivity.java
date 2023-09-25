@@ -23,37 +23,25 @@ public class AndroidWebServerActivity extends Activity {
         setContentView(R.layout.main);
         btnUtils = new BtnUtils(this, STATIC_CONTENT_PORT, WEB_SOCKET_PORT, secure);
         try {
-            String formattedIpAddress = IpUtils.getIPAddressSafe();
-            addButtons(formattedIpAddress);
-            HostUtils hostUtils = new HostUtils(STATIC_CONTENT_PORT, WEB_SOCKET_PORT, secure);
-            final String host = hostUtils.getStaticHost(formattedIpAddress);
+            final HostUtils hostUtils = new HostUtils(STATIC_CONTENT_PORT, WEB_SOCKET_PORT, secure);
+            final String host = hostUtils.getStaticHost(IpUtils.getIPAddressSafe());
             Map<String, String> mainParams = new LinkedHashMap<>();
             mainParams.put("sh", host);
+            mainParams.put("wh", hostUtils.getSocketHost(IpUtils.LOCALHOST));
+
+            addButtons(hostUtils, host, mainParams);
             btnUtils.launchTwa(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams);
         } catch (Exception e) {
             Log.e(MAIN_LOG_TAG, "main", e);
         }
     }
 
-    private void addButtons(String formattedIpAddress) {
-        HostUtils hostUtils = new HostUtils(STATIC_CONTENT_PORT, WEB_SOCKET_PORT, secure);
-        final String host = hostUtils.getStaticHost(formattedIpAddress);
-        Map<String, String> mainParams = new LinkedHashMap<>();
-        mainParams.put("wh", hostUtils.getSocketHost(IpUtils.LOCALHOST));
-        mainParams.put("sh", host);
-        {
-            btnUtils.addButtonTwa(WEB_GAME_URL, mainParams, R.id.twa_web);
-            btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.twa_localhost);
-            btnUtils.addButtonWebView(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.webview_localhost);
-            btnUtils.addButtonBrowser(host, mainParams, R.id.launch_browser, host);
-            btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCAL_IP), mainParams, R.id.twa_127_2);
-        }
-        {
-            Map<String, String> b = new LinkedHashMap<>();
-            b.put("wh", hostUtils.getSocketHost(IpUtils.LOCAL_IP));
-            b.put("sh", host);
-            btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCAL_IP), b, R.id.twa_127);
-        }
+    private void addButtons(HostUtils hostUtils, String host, Map<String, String> mainParams) {
+        btnUtils.addButtonTwa(WEB_GAME_URL, mainParams, R.id.twa_web);
+        btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.twa_localhost);
+        btnUtils.addButtonWebView(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.webview_localhost);
+        btnUtils.addButtonBrowser(host, mainParams, R.id.launch_browser, host);
+        btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCAL_IP), mainParams, R.id.twa_127);
     }
 
     @Override

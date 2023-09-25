@@ -29,6 +29,7 @@ body {
 input, select, textarea, button {
   font-family:inherit;
   font-size:inherit;
+  box-sizing: border-box;
 }
 
 body {
@@ -95,7 +96,7 @@ footer {
 
 .nameinput {
   padding: 10px 2px;
-  flex-grow: 1;
+  width: 100%;
 }
 
 .namesubmit {
@@ -105,7 +106,7 @@ footer {
 }
 
 .nameform {
-  height: 100px;
+  min-height: 100px;
 }
 
 .spinner {
@@ -171,33 +172,41 @@ footer {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  border-color: var(--borders-color);
-  box-shadow: 0 0 4px rgb(0 0 0 / 14%),0 4px 8px rgb(0 0 0 / 28%);
+  position: relative;
+  border-top: solid 1px var(--borders-color);
+  height: 60px;
+}
+
+.chat-input:focus-within {
+  border-top: none;
 }
 
 .chat-input input {
-  height: 100%;
-  flex-grow: 1;
-  font-size: 1rem;
-  padding: 0 5px;
+  height: 56px;
+  width: 100%;
   border: none;
+  font-size: 1rem;
+  padding: 0 60px 0 30px;
   outline-color: var(--borders-color);
+  border-radius: 60px;
+  margin: 0 1px;
 }
 
 .chat-input button {
   outline-color: var(--borders-color);
-  background-color: white;
-  border: 0;
+  border: none;
   transition: all 0.15s ease-in-out;
+  position: absolute;
+  right: 0;
+  display: grid;
+  transform: translateX(100%);
 }
 
 .circle {
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  margin: 5px;
   background: rgb(61 114 237 / 20%);
-  display: grid;
 }
 
 .circle svg {
@@ -205,12 +214,13 @@ footer {
   margin: auto;
 }
 
-.chat-input input.good + button .circle {
+.chat-input input.good + button.circle {
   box-shadow: 0 0 2px rgb(0 0 0 / 12%),0 2px 4px rgb(0 0 0 / 24%);
   background: #2671ff;
+  transform: translateX(-10%);
 }
 
-.chat-input input.good + button:hover .circle {
+.chat-input input.good + button:hover.circle {
   box-shadow: 0 8px 17px 0 rgb(0 0 0 / 20%),0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 

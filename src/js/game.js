@@ -26,7 +26,6 @@ function handleResize(window, document, callback) {
         messageList.scrollTop = messageList.scrollHeight;
         if (window.visualViewport) {
             const newH = Math.floor(window.visualViewport.height) + "px";
-            console.log(newH);
             const root = document.documentElement;
             root.style.setProperty("--window-inner-height", newH);
         }
@@ -130,7 +129,7 @@ export default function game(window, document, settings) {
         }
         sendMessage(textInput.value);
         textInput.value = "";
-        // textInput.classList.remove("good");
+        textInput.classList.remove("good");
     });
 
     function on(name, f) {
