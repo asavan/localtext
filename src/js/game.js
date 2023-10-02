@@ -5,7 +5,7 @@ function stub(message) {
     console.trace("Stub " + message);
 }
 
-async function addMessage(document, messageObj, className) {
+function addMessage(document, messageObj, className) {
     const messageList = document.querySelector(".chat-window");
     const mTemplate = document.querySelector("#message-template");
     const mClone = mTemplate.content.cloneNode(true).firstElementChild;
@@ -16,7 +16,6 @@ async function addMessage(document, messageObj, className) {
     const date = new Date(messageObj.date);
     mClone.querySelector(".timestamp").innerText = date.toLocaleTimeString();
     messageList.appendChild(mClone);
-    // await delay(200);
     messageList.scrollTop = messageList.scrollHeight;
 }
 
