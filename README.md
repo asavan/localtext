@@ -1,8 +1,10 @@
 # localtext
 
-### Чат поверх web-rtc.
+### Чат поверх web-rtc. 
 
 [![Test covered](https://github.com/asavan/localtext/actions/workflows/static.yml/badge.svg)](https://github.com/asavan/localtext/actions/workflows/static.yml)
+
+![Obwalka](/android/to_launch/input.png "Obwalka")
 
 1) Представиться
 2) Писать в общую комнату
