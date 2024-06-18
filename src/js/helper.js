@@ -18,7 +18,7 @@ export function removeElem(el) {
     }
 }
 
-function logToHtml(settings, message, el) {
+function logToHtml(message, el) {
     if (!el) {
         return;
     }
@@ -35,12 +35,12 @@ export function log(message, el) {
 }
 
 export function error(settings, message, el) {
-    logToHtml(settings, message, el);
+    logToHtml(message, el);
     console.error(message);
 }
 
 function stringToBoolean(string){
-    switch(string.toLowerCase().trim()){
+    switch (string.toLowerCase().trim()){
     case "true": case "yes": case "1": return true;
     case "false": case "no": case "0": case null: return false;
     default: return Boolean(string);

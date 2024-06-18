@@ -161,7 +161,7 @@ footer {
   overflow: auto;
 }
 
-@media (height >= 540px) {
+@media (min-height: 540px) {
   .chatbox {
     max-height: min(calc(100dvh - 200px), var(--window-inner-height));
     min-height: calc(100dvh - 310px);

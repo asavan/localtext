@@ -1,27 +1,32 @@
 {
     "name": "asavan local text chat",
-	"short_name": "localtext",
+    "short_name": "localtext",
     "icons": [
         {
-          "src": "./images/prism.svg",
-          "sizes": "any",
-          "type": "image/svg+xml",
-          "purpose": "any maskable"
+            "src": "./images/prism.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
         },
         {
-          "src": "./images/icon192.png",
-          "sizes": "192x192",
-          "type": " image/png"
+            "src": "./images/icon192.png",
+            "sizes": "192x192",
+            "type": " image/png"
         }
     ],
     "shortcuts": [
-      {
-        "name": "Server Mode",
-        "short_name": "Server",
-        "description": "Start as server",
-        "url": "./?mode=server",
-        "icons": [{ "src": "./images/icon192.png", "sizes": "192x192" }]
-      }
+        {
+            "name": "Server Mode",
+            "short_name": "Server",
+            "description": "Start as server",
+            "url": "./?mode=server",
+            "icons": [
+                {
+                    "src": "./images/icon192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
