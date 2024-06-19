@@ -10,6 +10,9 @@ import {InjectManifest} from "workbox-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import webpack from "webpack";
 
+import { createRequire } from "module";
+const PACKAGE = createRequire(import.meta.url)("../package.json");
+
 const prodConfig = () => {
     const dirname = path.dirname(fileURLToPath(import.meta.url));
     return {
@@ -61,7 +64,8 @@ const prodConfig = () => {
                 ]
             }),
             new webpack.DefinePlugin({
-                __USE_SERVICE_WORKERS__: true
+                __USE_SERVICE_WORKERS__: true,
+                __SERVICE_WORKER_VERSION__: JSON.stringify(PACKAGE.version)
             }),
             new CopyPlugin({
                 patterns: [
