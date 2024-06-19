@@ -1,84 +1,49 @@
 "use strict";
 
+import { getWebSocketUrl, getMyId } from "../connection/common.js";
 import actionsFunc from "../actions.js";
-import Queue from "../utils/queue.js";
+import PromiseQueue from "../utils/async-queue.js";
 import connectionFunc from "../connection/socket.js";
-import rngFunc from "../utils/random.js";
 import loggerFunc from "../utils/logger.js";
 import { makeQr, removeElem } from "../utils/qr_helper.js";
 import gameFunction from "../game.js";
+import networkMapper from "../connection/network_mapper.js";
+import glueObj from "../connection/glue.js";
+import handlersFunc from "../utils/handlers.js";
 
-function toObjJson(v, method) {
-    const value = {
-        "method": method
-    };
-    value[method] = v;
-    return value;
+
+function glueNetToActions(connection, actions, queue) {
+    const mapperActions = glueObj.simpleMapper(actions);
+    const networkHandler = handlersFunc(mapperActions.actionKeys(), queue);
+    const glued = glueObj.glueSimple(networkHandler, mapperActions);
+    connection.registerHandler(networkHandler);
+    return glued;
 }
 
-function makeid(length) {
-    return rngFunc.makeId(length, Math.random);
-}
-
-function loop(queue, window) {
-    let inProgress = false;
-
-    async function step() {
-        if (!queue.isEmpty() && !inProgress) {
-            const {callback, res, id} = queue.dequeue();
-            inProgress = true;
-            await callback(res, id);
-            inProgress = false;
-        }
-        window.requestAnimationFrame(step);
+export default async function gameMode(window, document, settings) {
+    const myId = getMyId(window, settings, Math.random);
+    const loggerEl = settings.logger ? document.querySelector(settings.logger) : null;
+    const networkLogger = loggerFunc(5, loggerEl, settings);
+    const logger = loggerFunc(6, null, settings);
+    const socketUrl = getWebSocketUrl(settings, window.location);
+    if (!socketUrl) {
+        networkLogger.error("Can't determine ws address", socketUrl);
+        return;
     }
-    window.requestAnimationFrame(step);
-}
 
-function setupProtocol(connection, actions, queue) {
-    connection.on("recv", (obj, id) => {
-        const res = obj[obj.method];
-        const callback = actions[obj.method];
-        if (typeof callback === "function") {
-            queue.enqueue({callback, res, fName: obj.method, id});
-        }
+    const connection = connectionFunc(myId, networkLogger, false);
+
+    const queue = PromiseQueue(logger);
+    const game = gameFunction(window, document, settings);
+    const actions = actionsFunc(game);
+    glueNetToActions(connection, actions, queue);
+
+    await connection.connect(socketUrl);
+    const code = makeQr(window, document, settings);
+    connection.on("socket_close", () => {
+        removeElem(code);
     });
-}
-
-export default function gameMode(window, document, settings) {
-
-    return new Promise((resolve, reject) => {
-
-        const myId = makeid(6);
-        const loggerEl = settings.logger ? document.querySelector(settings.logger) : null;
-        const networkLogger = loggerFunc(5, loggerEl, settings);
-        const connection = connectionFunc(settings, window.location, myId, networkLogger);
-        connection.on("error", (e) => {
-            networkLogger.error(e);
-            reject(e);
-        });
-
-        const queue = Queue();
-        const game = gameFunction(window, document, settings);
-        const actions = actionsFunc(game);
-        setupProtocol(connection, actions, queue);
-
-        loop(queue, window);
-
-        connection.connect().then(con => {
-            const code = makeQr(window, document, settings);
-            connection.on("socket_close", () => {
-                removeElem(code);
-            });
-            for (const handlerName of game.actionKeys()) {
-                game.on(handlerName, (n) => con.sendAll(toObjJson(n, handlerName)));
-            }
-            game.onConnect();
-        }).catch(e => {
-            networkLogger.error(e);
-            reject(e);
-        });
-
-        resolve(game);
-    });
+    const nMapper = networkMapper.networkMapperServer({connection});
+    glueObj.glueSimple(game, nMapper);
+    game.onConnect();
 }

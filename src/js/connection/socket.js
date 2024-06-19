@@ -1,74 +1,111 @@
-"use strict";
+import handlersFunc from "../utils/handlers.js";
+import {createSignalingChannel} from "./common.js";
 
-import commonConnection from "./common.js";
-
-function stub(message) {
-    console.trace("Stub " + message);
-}
-
-export default function connectionFunc(settings, location, id, logger) {
-    const handlers = {
-        "recv": stub,
-        "open": stub,
-        "socket_open": stub,
-        "socket_close": stub,
-        "close": stub,
-        "error": stub,
-        "disconnect": stub
-    };
+export default function connectionFunc(id, logger, isServer) {
+    const handlers = handlersFunc([
+        "close",
+        "disconnect",
+        "error",
+        "open",
+        "gameinit",
+        "reconnect",
+        "socket_open",
+        "socket_close"
+    ]);
 
     function on(name, f) {
-        handlers[name] = f;
+        return handlers.on(name, f);
     }
 
-    function getWebSocketUrl() {
-        if (settings.wh) {
-            return settings.wh;
-        }
-        if (location.protocol === "https:") {
-            return null;
-        }
-        return "ws://" + location.hostname + ":" + settings.wsPort;
+    let userHandlers;
+    let dataChannel;
+
+    function registerHandler(handler) {
+        userHandlers = handler;
     }
 
-    function connect() {
+    function connect(socketUrl) {
         return new Promise((resolve, reject) => {
-            const socketUrl = getWebSocketUrl();
-            if (socketUrl == null) {
-                reject("Can't determine ws address");
-            }
-            const signaling = commonConnection.createSignalingChannel(id, socketUrl, logger, handlers, onOpen);
-            signaling.onmessage = async function(json) {
+            const signaling = createSignalingChannel(id, socketUrl, logger);
+            dataChannel = signaling;
+            signaling.on("error", (data) => {
+                logger.log("Connection to ws error " + data);
+                reject(data);
+            });
+
+            signaling.on("message", (json) => {
                 if (json.from === id) {
                     logger.error("same user");
                     return;
                 }
 
-                if (json.to !== id && json.to != "all") {
-                    logger.log("another user");
+                if (json.to !== id && json.to !== "all") {
+                    logger.log("another user", json, id);
                     return;
                 }
 
-                if (json.action === "gamemessage") {
-                    await handlers["recv"](json.data, json.from);
+                if (json.ignore && Array.isArray(json.ignore) && json.ignore.includes(id)) {
+                    logger.log("user in ignore list");
+                    return;
                 }
-            };
 
-            const sendAllExceptMe = (data) => {
-                logger.log(data);
-                return signaling.send("gamemessage", data, "all");
-            };
+                if (json.action === "connected") {
+                    if (isServer) {
+                        signaling.send("open", {id}, json.from);
+                        return handlers.call("open", {id: json.from});
+                    }
+                    return;
+                }
 
-            const sendAll = sendAllExceptMe;
+                if (handlers.actionKeys().includes(json.action)) {
+                    logger.log("handlers.actionKeys", json.action);
+                    return handlers.call(json.action, json);
+                }
+                if (userHandlers && userHandlers.actionKeys().includes(json.action)) {
+                    logger.log("callUserHandler", json.action);
+                    return userHandlers.call(json.action, json.data);
+                }
+                logger.log("Unknown action " + json.action);
+            });
 
-            const sendTo = stub;
+            signaling.on("close", data => handlers.call("socket_close", data));
 
-            function onOpen() {
-                resolve({sendTo, sendAllExceptMe, sendAll});
-            }
+            signaling.on("open", () => {
+                handlers.call("socket_open", {});
+                signaling.send("connected", {id}, "all");
+                return resolve();
+            });
         });
     }
+
+    const sendRawTo = (action, data, to) => {
+        if (!dataChannel) {
+            logger.error("No channel", dataChannel);
+            return false;
+        }
+        return dataChannel.send(action, data, to);
+    };
+
+    const sendRawAll = (type, data, ignore) => {
+        if (!dataChannel) {
+            logger.error("No channel", dataChannel);
+            return false;
+        }
+        return dataChannel.send(type, data, "all", ignore);
+    };
+
+    const getLogger = () => logger;
+    // for tests
+    const getChannel = () => dataChannel;
+
     return {
-        connect, on
+        connect,
+        on,
+        registerHandler,
+        sendRawTo,
+        sendRawAll,
+        getLogger,
+        // for tests
+        getChannel
     };
 }

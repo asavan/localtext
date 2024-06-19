@@ -1,58 +1,83 @@
-"use strict";
+import handlersFunc from "../utils/handlers.js";
+import rngFunc from "../utils/random.js";
 
-function stub() {}
+function stub() {
+    // do nothing.
+}
 
-function createSignalingChannel(id, socketUrl, logger, handlers, onOpen) {
+export function getMyId(window, settings, rngEngine) {
+    const data = window.sessionStorage.getItem(settings.idNameInStorage);
+    if (data) {
+        return data;
+    }
+    const newId = rngFunc.makeId(settings.idNameLen, rngEngine);
+    window.sessionStorage.setItem(settings.idNameInStorage, newId);
+    return newId;
+}
+
+export function getWebSocketUrl(settings, location) {
+    if (settings.wh) {
+        return settings.wh;
+    }
+    if (location.protocol === "https:") {
+        return;
+    }
+    return "ws://" + location.hostname + ":" + settings.wsPort;
+}
+
+export function createSignalingChannel(id, socketUrl, logger) {
+    const handlers = handlersFunc(["error", "open", "message", "beforeclose", "close"]);
     const ws = new WebSocket(socketUrl);
 
-    const send = (type, sdp, to) => {
-        const json = {from: id, to: to, action: type, data: sdp};
+    const send = (type, sdp, to, ignore) => {
+        const json = {from: id, to: to, action: type, data: sdp, ignore};
         logger.log("Sending [" + id + "] to [" + to + "]: " + JSON.stringify(sdp));
         return ws.send(JSON.stringify(json));
     };
 
-    const close = () => {
+    const close = async () => {
         // iphone fires "onerror" on close socket
-        handlers["error"] = stub;
-        ws.close();
+        await handlers.call("beforeclose", id);
+        ws.onerror = stub;
+        return ws.close();
     };
 
-    const onmessage = stub;
-    const result = {onmessage, send, close};
+    function ready() {
+        return new Promise((resolve) => {
+            if (ws.readyState === 1) {
+                resolve();
+            } else {
+                ws.addEventListener("open", resolve);
+            }
+        });
+    }
+
+    const on = (name, f) => handlers.on(name, f);
 
     function onMessageInner(text) {
         logger.log("Websocket message received: " + text);
         const json = JSON.parse(text);
-        return result.onmessage(json);
+        return handlers.call("message", json);
     }
 
-    ws.onopen = function() {
-        return onOpen(id);
-    };
+    ws.addEventListener("open", () => handlers.call("open", id));
 
     ws.onclose = function (e) {
         logger.log("Websocket closed " + e.code + " " + e.reason);
-        return handlers["socket_close"](id);
+        return handlers.call("close", id);
     };
 
-    ws.onmessage = function (e) {
+    ws.onmessage = async function (e) {
         if (e.data instanceof Blob) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                return onMessageInner(reader.result);
-            };
-            return reader.readAsText(e.data);
+            const text = await e.data.text();
+            return onMessageInner(text);
         } else {
             return onMessageInner(e.data);
         }
     };
     ws.onerror = function (e) {
         logger.error(e);
-        return handlers["error"]("ws error");
+        return handlers.call("error", id);
     };
-    return result;
+    return {on, send, close, ready};
 }
-
-export default {
-    createSignalingChannel
-};

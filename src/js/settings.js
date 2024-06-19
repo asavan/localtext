@@ -5,5 +5,7 @@ export default {
     logger: "",
     networkDebug: false,
     logLevel: 4,
-    vibrate: 10
+    vibrate: 10,
+    idNameInStorage: "my-id",
+    idNameLen: 6
 };
