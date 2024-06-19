@@ -7,18 +7,8 @@ import connectionFunc from "../connection/socket.js";
 import loggerFunc from "../utils/logger.js";
 import { makeQr, removeElem } from "../utils/qr_helper.js";
 import gameFunction from "../game.js";
-import networkMapper from "../connection/network_mapper.js";
+import networkAdapter from "../connection/network_adapter.js";
 import glueObj from "../connection/glue.js";
-import handlersFunc from "../utils/handlers.js";
-
-
-function glueNetToActions(connection, actions, queue) {
-    const mapperActions = glueObj.simpleMapper(actions);
-    const networkHandler = handlersFunc(mapperActions.actionKeys(), queue);
-    const glued = glueObj.glueSimple(networkHandler, mapperActions);
-    connection.registerHandler(networkHandler);
-    return glued;
-}
 
 export default async function gameMode(window, document, settings) {
     const myId = getMyId(window, settings, Math.random);
@@ -32,18 +22,17 @@ export default async function gameMode(window, document, settings) {
     }
 
     const connection = connectionFunc(myId, networkLogger, false);
-
     const queue = PromiseQueue(logger);
+    const nAdapter = networkAdapter(connection, queue, myId, myId);
     const game = gameFunction(window, document, settings);
-    const actions = actionsFunc(game);
-    glueNetToActions(connection, actions, queue);
+    const gAdapter = glueObj.wrapAdapter(game, actionsFunc);
 
     await connection.connect(socketUrl);
+
     const code = makeQr(window, document, settings);
     connection.on("socket_close", () => {
         removeElem(code);
     });
-    const nMapper = networkMapper.networkMapperServer({connection});
-    glueObj.glueSimple(game, nMapper);
+    gAdapter.connectAdapter(nAdapter);
     game.onConnect();
 }
