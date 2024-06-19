@@ -1,11 +1,5 @@
-"use strict";
-
-function init(game) {
+export default function init(game) {
     return {
-        "message": (m) => {
-            return game.onMessage(m);
-        }
+        "message": game.onMessage
     };
 }
-
-export default init;

@@ -35,10 +35,13 @@ export default function handlersFunc(arr, queue) {
         return Promise.all(promises);
     };
 
+    const handler = (name) => (arg) => call(name, arg);
+
     return {
         on,
         setOnce,
         call,
+        handler,
         reset,
         actionKeys
     };
