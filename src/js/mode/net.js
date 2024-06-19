@@ -1,11 +1,12 @@
 "use strict";
 
-import {removeElem, log, error} from "../helper.js";
 import actionsFunc from "../actions.js";
-import qrRender from "../lib/qrcode.js";
 import Queue from "../utils/queue.js";
 import connectionFunc from "../connection/socket.js";
 import rngFunc from "../utils/random.js";
+import loggerFunc from "../utils/logger.js";
+import { makeQr, removeElem } from "../utils/qr_helper.js";
+import gameFunction from "../game.js";
 
 function toObjJson(v, method) {
     const value = {
@@ -17,13 +18,6 @@ function toObjJson(v, method) {
 
 function makeid(length) {
     return rngFunc.makeId(length, Math.random);
-}
-
-function makeQr(window, document, settings) {
-    const staticHost = settings.sh || window.location.href;
-    const url = new URL(staticHost);
-    console.log("enemy url", url.toString());
-    return qrRender(url.toString(), document.querySelector(".qrcode"));
 }
 
 function loop(queue, window) {
@@ -51,46 +45,17 @@ function setupProtocol(connection, actions, queue) {
     });
 }
 
-function networkLoggerFunc(logger, settings) {
-    const logInner = (data) => {
-        if (!settings.networkDebug || !logger) {
-            return;
-        }
-        return log(data, logger);
-    };
-    const errorInner = (data) => {
-        if (!logger) {
-            return;
-        }
-        return error(data, logger);
-    };
-    return {
-        log: logInner,
-        error: errorInner
-    };
-}
-
-//function setupMedia() {
-//    if (navigator.mediaDevices) {
-//        return navigator.mediaDevices.getUserMedia({
-//            audio: true,
-//            video: true
-//        });
-//    } else {
-//        console.log("No mediaDevices");
-//    }
-//}
-
-export default function gameMode(window, document, settings, gameFunction) {
+export default function gameMode(window, document, settings) {
 
     return new Promise((resolve, reject) => {
 
         const myId = makeid(6);
-        const logger = settings.logger ? document.querySelector(settings.logger) : null;
-        const networkLogger = networkLoggerFunc(logger, settings);
+        const loggerEl = settings.logger ? document.querySelector(settings.logger) : null;
+        const networkLogger = loggerFunc(5, loggerEl, settings);
         const connection = connectionFunc(settings, window.location, myId, networkLogger);
         connection.on("error", (e) => {
-            networkLogger.error(e, logger);
+            networkLogger.error(e);
+            reject(e);
         });
 
         const queue = Queue();
@@ -110,7 +75,7 @@ export default function gameMode(window, document, settings, gameFunction) {
             }
             game.onConnect();
         }).catch(e => {
-            networkLogger.error(e, logger);
+            networkLogger.error(e);
             reject(e);
         });
 

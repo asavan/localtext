@@ -41,7 +41,7 @@ function handleResize(window, document, callback) {
 
 function setupInput(textInput, callback) {
     const onChange = () => {
-        if (textInput.value == "") {
+        if (!textInput.value) {
             textInput.classList.remove("good");
         } else {
             textInput.classList.add("good");
