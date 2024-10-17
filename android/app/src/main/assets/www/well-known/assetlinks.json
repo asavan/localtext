@@ -25,8 +25,10 @@
   "target": {
     "namespace": "android_app",
     "package_name": "ru.asavan.localtext",
-    "sha256_cert_fingerprints":
-    ["28:1C:08:6A:82:62:97:D2:5D:37:D8:33:42:FA:EC:91:9C:EA:81:63:04:27:0A:66:D2:63:B2:1B:7F:93:49:83"]
+    "sha256_cert_fingerprints": [
+      "28:1C:08:6A:82:62:97:D2:5D:37:D8:33:42:FA:EC:91:9C:EA:81:63:04:27:0A:66:D2:63:B2:1B:7F:93:49:83",
+      "42:58:AF:E3:C6:F8:F3:01:E7:33:84:A5:F7:4A:35:C9:34:14:3C:2B:67:B6:5A:5C:6E:A4:4E:BC:5C:73:B4:4D"
+    ]
   }
 }
 ]
