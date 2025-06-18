@@ -29,14 +29,6 @@ public class BtnUtils {
         this.secure = secure;
     }
 
-    public void launchWebView(String host, Map<String, String> parameters) {
-        Intent intent = new Intent(activity.getApplicationContext(), WebViewActivity.class);
-        String launchUrl = UrlUtils.getLaunchUrl(host, parameters);
-        Log.i("BTN_UTILS", launchUrl);
-        intent.putExtra("url", launchUrl);
-        activity.startActivity(intent);
-    }
-
     public void addButtonBrowser(final String host, Map<String, String> parameters, int btnId) {
         addButtonBrowser(host, parameters, btnId, null);
     }
@@ -48,11 +40,6 @@ public class BtnUtils {
             btn.setText(newText);
         }
         btn.setOnClickListener(v -> launchBrowser(host, parameters));
-    }
-
-    public void addButtonWebView(final String host, Map<String, String> parameters, int btnId) {
-        Button btn = activity.findViewById(btnId);
-        btn.setOnClickListener(v -> launchWebViewAndServer(host, parameters));
     }
 
     public void addButtonTwa(String host, Map<String, String> parameters, int id) {
@@ -73,13 +60,6 @@ public class BtnUtils {
         Uri launchUri = Uri.parse(UrlUtils.getLaunchUrl(host, parameters));
         activity.startActivity(new Intent(Intent.ACTION_VIEW, launchUri));
     }
-
-
-    private void launchWebViewAndServer(String host, Map<String, String> parameters) {
-        startServerAndSocket();
-        launchWebView(host, parameters);
-    }
-
 
     public void launchTwa(String host, Map<String, String> parameters) {
         startServerAndSocket();

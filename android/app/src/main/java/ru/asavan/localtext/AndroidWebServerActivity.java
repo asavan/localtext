@@ -39,16 +39,14 @@ public class AndroidWebServerActivity extends Activity {
     private void addButtons(HostUtils hostUtils, String host, Map<String, String> mainParams) {
         btnUtils.addButtonTwa(WEB_GAME_URL, mainParams, R.id.twa_web);
         btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.twa_localhost);
-        btnUtils.addButtonWebView(hostUtils.getStaticHost(IpUtils.LOCALHOST), mainParams, R.id.webview_localhost);
         btnUtils.addButtonBrowser(host, mainParams, R.id.launch_browser, host);
-        btnUtils.addButtonTwa(hostUtils.getStaticHost(IpUtils.LOCAL_IP), mainParams, R.id.twa_127);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (btnUtils != null) {
             btnUtils.onDestroy();
         }
+        super.onDestroy();
     }
 }
