@@ -4,20 +4,20 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 android {
     namespace = "ru.asavan.localtext"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "ru.asavan.localtext"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 9
-        versionName = "1.6.2"
+        targetSdk = 36
+        versionCode = 10
+        versionName = "1.6.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -34,7 +34,7 @@ dependencies {
 
     implementation("org.nanohttpd:nanohttpd:2.3.1")
     implementation("org.nanohttpd:nanohttpd-websocket:2.3.1")
-    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.5.0")
+    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.6.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
