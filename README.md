@@ -6,7 +6,10 @@
 [![google play](https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dru.asavan.localtext%26gl%3DUS%26hl%3Den%26l%3D%24name%26m%3D%24version)](https://play.google.com/store/apps/details?id=ru.asavan.localtext)
 
 ## Demo
-![Obwalka](/android/to_launch/name.png "name") ![Obwalka](/android/to_launch/input.png "Obwalka")
+1                                             |  2                        
+:--------------------------------------------:|:-------------------------:
+![Name](/android/to_launch/name.png "name")   |  ![Obwalka](/android/to_launch/input.png "Obwalka")
+
 
 1) Представиться
 2) Писать в общую комнату
