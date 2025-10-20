@@ -31,8 +31,7 @@ export default async function gameMode(window, document, settings) {
     const myId = netObj.getMyId(window, settings, Math.random);
     const networkLogger = loggerFunc(document, settings, 2);
     const logger = loggerFunc(document, settings, 3);
-    const serverId = settings.serverId || myId;
-    const gameChannel = await createSignalingChannel(myId, serverId, window.location, settings, networkLogger);
+    const gameChannel = await createSignalingChannel(myId, settings.serverId, window.location, settings, networkLogger);
     const connection = broadcastConnectionFunc(myId, networkLogger, gameChannel);
     const queue = PromiseQueue(logger);
     const nAdapter = networkAdapter(connection, queue, myId, myId, networkLogger);
@@ -41,6 +40,7 @@ export default async function gameMode(window, document, settings) {
 
     await connection.connect();
 
+    const serverId = settings.serverId || myId;
     const code = makeQr(window, document, settings, serverId);
     gameChannel.on("close", () => {
         removeElem(code);
