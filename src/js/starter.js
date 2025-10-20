@@ -1,5 +1,5 @@
 import settings from "./settings.js";
-import {parseSettings} from "./utils/parse-settings.js";
+import {parseSettings} from "netutils";
 import gameMode from "./mode/net.js";
 
 export default function starter(window, document) {

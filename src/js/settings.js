@@ -1,11 +1,12 @@
 export default {
-    modes: ["net"],
-    mode: "net",
+    channelTypes: ["socket", "supa", "fake", "auto", "auto", "autocs", "none"],
+    channelType: "autocs",
     wsPort : 8088,
     logger: "",
-    networkDebug: false,
-    logLevel: 4,
+    logLevel: 1,
     vibrate: 10,
+    serverId: "",
+    gameChanPrefix: "local_",
     idNameInStorage: "my-id",
     idNameLen: 6
 };

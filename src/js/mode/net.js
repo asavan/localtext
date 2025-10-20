@@ -1,36 +1,48 @@
 "use strict";
 
-import { getWebSocketUrl, getMyId } from "../connection/common.js";
 import actionsFunc from "../actions.js";
-import PromiseQueue from "../utils/async-queue.js";
-import connectionFunc from "../connection/socket.js";
-import loggerFunc from "../utils/logger.js";
-import { makeQr, removeElem } from "../utils/qr_helper.js";
 import gameFunction from "../game.js";
 import networkAdapter from "../connection/network_adapter.js";
 import glueObj from "../connection/glue.js";
 
-export default async function gameMode(window, document, settings) {
-    const myId = getMyId(window, settings, Math.random);
-    const loggerEl = settings.logger ? document.querySelector(settings.logger) : null;
-    const networkLogger = loggerFunc(5, loggerEl, settings);
-    const logger = loggerFunc(6, null, settings);
-    const socketUrl = getWebSocketUrl(settings, window.location);
-    if (!socketUrl) {
-        networkLogger.error("Can't determine ws address", socketUrl);
-        return;
-    }
+import {
+    createSignalingChannel, broadcastConnectionFunc,
+    loggerFunc, PromiseQueue, netObj, makeQrStr, removeElem
+} from "netutils";
 
-    const connection = connectionFunc(myId, networkLogger, false);
+function makeQr(window, document, settings, serverId) {
+    const staticHost = netObj.getHostUrl(settings, window.location);
+    const url = new URL(staticHost);
+    if (serverId) {
+        url.searchParams.set("serverId", serverId);
+    }
+    console.log("enemy url", url.toString());
+    const image = {
+        source: "./images/envelope.svg",
+        width: "20%",
+        height: "10%",
+        x: "center",
+        y: "center",
+    };
+    return makeQrStr(url.toString(), window, document, settings, image);
+}
+
+export default async function gameMode(window, document, settings) {
+    const myId = netObj.getMyId(window, settings, Math.random);
+    const networkLogger = loggerFunc(document, settings, 2);
+    const logger = loggerFunc(document, settings, 3);
+    const serverId = settings.serverId || myId;
+    const gameChannel = await createSignalingChannel(myId, serverId, window.location, settings, networkLogger);
+    const connection = broadcastConnectionFunc(myId, networkLogger, gameChannel);
     const queue = PromiseQueue(logger);
-    const nAdapter = networkAdapter(connection, queue, myId, myId);
+    const nAdapter = networkAdapter(connection, queue, myId, myId, networkLogger);
     const game = gameFunction(window, document, settings);
     const gAdapter = glueObj.wrapAdapter(game, actionsFunc);
 
-    await connection.connect(socketUrl);
+    await connection.connect();
 
-    const code = makeQr(window, document, settings);
-    connection.on("socket_close", () => {
+    const code = makeQr(window, document, settings, serverId);
+    gameChannel.on("close", () => {
         removeElem(code);
     });
     gAdapter.connectAdapter(nAdapter);
