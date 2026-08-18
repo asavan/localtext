@@ -2,12 +2,6 @@ plugins {
     id("com.android.application")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
-}
-
 android {
     namespace = "ru.asavan.localtext"
     compileSdk = 37
@@ -22,6 +16,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packaging {
+        jniLibs {
+            pickFirsts += "META-INF/nanohttpd/*"
+        }
+        resources {
+            pickFirsts += "META-INF/nanohttpd/*"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -30,6 +33,11 @@ android {
                 enable = false
             }
         }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
