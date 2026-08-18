@@ -12,7 +12,6 @@ public class IpUtils {
     public static final String LOCAL_IP = "127.0.0.1";
     public static final String LOCALHOST = "localhost";
 
-
     public static String getIPAddress() {
         try {
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());

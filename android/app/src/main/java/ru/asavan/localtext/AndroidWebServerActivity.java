@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class AndroidWebServerActivity extends Activity {
     private static final int STATIC_CONTENT_PORT = 8080;
-    private static final int WEB_SOCKET_PORT = 8088;
+    private static final int WEB_SOCKET_PORT = 8080;
     private static final String WEB_GAME_URL = "https://asavan.github.io/localtext/";
     public static final String MAIN_LOG_TAG = "LOCAL_TEXT_TAG";
     private static final boolean secure = false;
@@ -21,7 +21,7 @@ public class AndroidWebServerActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        btnUtils = new BtnUtils(this, STATIC_CONTENT_PORT, WEB_SOCKET_PORT, secure);
+        btnUtils = new BtnUtils(this, STATIC_CONTENT_PORT);
         try {
             final HostUtils hostUtils = new HostUtils(STATIC_CONTENT_PORT, WEB_SOCKET_PORT, secure);
             final String host = hostUtils.getStaticHost(IpUtils.getIPAddressSafe());
