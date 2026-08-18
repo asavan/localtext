@@ -1,7 +1,8 @@
 export default {
     channelTypes: ["socket", "supa", "fake", "auto", "auto", "autocs", "none"],
     channelType: "autocs",
-    wsPort : 8088,
+    wsPort: 8080,
+    wsPath: "/signaling",
     logger: "",
     logLevel: 1,
     vibrate: 10,
