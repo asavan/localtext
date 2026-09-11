@@ -1,6 +1,6 @@
 {
   "name": "localtext",
-  "version": "1.6.6",
+  "version": "1.7.0",
   "author": "Alex Sav",
   "description": "Chat for local network",
   "private": true,
@@ -28,10 +28,10 @@
   },
   "homepage": "https://asavan.github.io/localtext/",
   "devDependencies": {
-    "devdeps": "github:asavan/dev-deps#v0.1.2"
+    "devdeps": "github:asavan/dev-deps#v0.3.1"
   },
   "dependencies": {
-    "netutils": "github:asavan/netutils#v0.1.9",
+    "netutils": "github:asavan/netutils#v0.2.2",
     "minidenticons": "^4.2.1"
   }
 }
